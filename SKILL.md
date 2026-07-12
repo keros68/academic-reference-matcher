@@ -52,27 +52,27 @@ If the user asks for "thorough", "systematic", "综述", "全面", "PRISMA", "me
    - Do not cite generic transitions, obvious background, or the user's own stated contribution unless requested.
    - Load `references/query-planning.md` when turning claims into search queries.
 
-3.0 Detect host search capability and pick the route:
-    - No search or browsing tool at all -> ask the user for a bibliography, PDFs, or database export (see Core Rules), then verify against those materials only.
-    - General web search only (no scholarly API) -> use domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org) from references/search-sources.md.
-    - Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> follow the Default Source Order in references/search-sources.md and the domain table in references/source-routing.md.
-    - Browser tool only (no query API) -> navigate directly to publisher, DOI, or PubMed pages.
+3. Detect host search capability and pick the route.
+   - No search or browsing tool at all -> ask the user for a bibliography, PDFs, or database export (see Core Rules), then verify against those materials only.
+   - General web search only (no scholarly API) -> use domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org) from references/search-sources.md.
+   - Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> follow the Default Source Order in references/search-sources.md and the domain table in references/source-routing.md.
+   - Browser tool only (no query API) -> navigate directly to publisher, DOI, or PubMed pages.
 
-3. Search broadly, then narrowly.
+4. Search broadly, then narrowly.
    - Start with exact phrases and key technical terms from the claim.
    - Search title/abstract/DOI sources before general web search when available.
    - Load `references/search-sources.md` when choosing sources or building queries.
    - Load `references/source-routing.md` for domain-specific routing or Deep/Audit work.
    - Load `references/paywall-aware-access.md` when relevant papers are paywalled or only metadata is visible.
 
-4. Verify relevance.
+5. Verify relevance.
    - Read enough of the title, abstract, metadata, snippets, and available full text to judge support.
    - Score each candidate using `references/verification-rubric.md` when the task has multiple candidates or high accuracy requirements.
    - Prefer papers that directly support the claim over papers that merely share keywords.
    - Require title, year, stable URL or DOI, and a support rationale before treating a match as usable.
    - Treat title, keywords, and metadata as discovery signals, not strong support, unless the claim is purely bibliographic.
 
-5. Format and insert citations.
+6. Format and insert citations.
    - Use the user's requested style. Load `references/output-formats.md` for output contracts and style notes.
    - Keep citations adjacent to the claims they support.
    - Include uncertainty notes for weak matches instead of silently overstating confidence.
