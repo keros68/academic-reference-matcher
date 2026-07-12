@@ -70,7 +70,7 @@ Omit unused style sections unless the user asked for multiple styles. Put BibTeX
 
 | Claim | Mode | Best reference | Support | Evidence basis | Confidence | Notes |
 |---|---|---|---|---|---|---|
-| Short claim text | Add/Verify/Replace | Author et al., year, title, DOI/URL | One-sentence support rationale | Abstract/full text/metadata/snippet/PDF | High/Medium/Low | Access limits or caveats |
+| Short claim text | Add/Verify/Replace | Author et al., year, title, DOI/URL | One-sentence support rationale | Discovery-only / Abstract-supported / Snippet-supported / Fulltext-supported / Bibliographic-only | High/Medium/Low | Access limits or caveats |
 
 Use `Discovery-only` in the Notes column when a paywalled paper looks relevant from title, keywords, or metadata but has not been verified through abstract, official snippet, full text, user PDF, or another adequate source.
 
