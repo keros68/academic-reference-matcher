@@ -1,6 +1,6 @@
 ---
 name: academic-reference-matcher
-description: Use when finding, adding, verifying, replacing, or formatting scholarly references for academic claims, paragraphs, manuscripts, literature reviews, rebuttals, grant text, or citation lists; use when checking whether cited papers support a claim, identifying claims that need citations, creating copy-ready citation reports/files, or producing APA, GB/T, Vancouver, IEEE, BibTeX, RIS, or DOI-linked references.
+description: Use when finding, adding, verifying, replacing, or formatting scholarly references for academic claims, paragraphs, manuscripts, literature reviews, rebuttals, grant text, or citation lists; use when checking whether cited papers support a claim, identifying claims that need citations, creating copy-ready citation reports/files, or producing APA, GB/T, Vancouver, IEEE, BibTeX, RIS, or DOI-linked references. Also use for Chinese requests such as 补参考文献、找文献、引用验证、文献匹配、加引用、GB/T 7714 格式引用. Not for general fact-checking without a citation need, or legal/journalistic citation formatting.
 ---
 
 # Academic Reference Matcher
@@ -52,6 +52,12 @@ If the user asks for "thorough", "systematic", "综述", "全面", "PRISMA", "me
    - Do not cite generic transitions, obvious background, or the user's own stated contribution unless requested.
    - Load `references/query-planning.md` when turning claims into search queries.
 
+3.0 Detect host search capability and pick the route:
+    - No search or browsing tool at all -> ask the user for a bibliography, PDFs, or database export (see Core Rules), then verify against those materials only.
+    - General web search only (no scholarly API) -> use domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org) from references/search-sources.md.
+    - Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> follow the Default Source Order in references/search-sources.md and the domain table in references/source-routing.md.
+    - Browser tool only (no query API) -> navigate directly to publisher, DOI, or PubMed pages.
+
 3. Search broadly, then narrowly.
    - Start with exact phrases and key technical terms from the claim.
    - Search title/abstract/DOI sources before general web search when available.
@@ -72,6 +78,7 @@ If the user asks for "thorough", "systematic", "综述", "全面", "PRISMA", "me
    - Include uncertainty notes for weak matches instead of silently overstating confidence.
    - Create a copy-ready Markdown report when the user asks for a file, export, citation package, or easy copy/paste output.
    - For Standard+ tasks, include a compact search audit. Load `references/search-audit.md`.
+   - Before finishing, confirm every claim ID from step 2 appears either in the claim-reference table or in the Could Not Verify section - no claim may be silently dropped.
 
 ## Search Strategy
 
@@ -98,6 +105,7 @@ Evidence tiers:
 
 - Discovery-only: title, keywords, index metadata, citation counts, or related-work lists suggest relevance but do not establish support.
 - Abstract-supported: the abstract directly supports the claim; usually Medium unless the claim is broad and low-risk.
+- Snippet-supported: an official publisher or database snippet directly addresses the claim; usually Low-Medium confidence.
 - Fulltext-supported: full text, user-provided PDF, official guideline, dataset record, or publisher page directly supports the claim; eligible for High.
 - Bibliographic-only: metadata is enough only for claims about existence, authorship, year, venue, DOI, or publication status.
 
@@ -137,12 +145,9 @@ For Deep or Audit tasks, include segment IDs in the table and a search audit sum
 - Literature coverage is not exhaustive unless the user provides a bounded corpus or reproducible database search strategy.
 - Final journal-specific formatting and high-stakes manuscript checks may still need human review.
 
-## Common Mistakes
+## Additional Guardrails
 
-- Do not treat high citation count as relevance.
-- Do not cite a review for a specific experimental result unless the review clearly reports it and the user accepts secondary sources.
-- Do not use a paper just because its abstract contains the same terms.
-- Do not replace a user's citation unless the current reference is wrong, weak, retracted, inaccessible, or outside the requested scope.
-- Do not hide missing access. Say what was checked and what could not be opened.
-- Do not rely on unofficial Google Scholar scraping or CAPTCHA workarounds; use stable scholarly records instead.
-- Do not claim exhaustive coverage unless the user provided a bounded corpus or a reproducible database search strategy.
+- Treat citation count only as a popularity signal; judge relevance by content match.
+- Cite a review for a specific experimental result only when the review clearly reports it and the user accepts secondary sources.
+- Use a paper only when its content, not just its abstract's terms, matches the claim.
+- Use stable scholarly records such as DOI, PubMed, arXiv, or publisher pages instead of unofficial Google Scholar scraping or CAPTCHA workarounds.
