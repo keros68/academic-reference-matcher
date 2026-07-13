@@ -7,8 +7,8 @@ Use this to choose where to search. The goal is better evidence fit, not more so
 Before applying the domain table below, check what search capability the host agent actually has:
 
 - No search or browsing tool at all -> do not attempt web routing; ask the user for a bibliography, PDFs, or database export, then verify against those materials only.
-- General web search only (no scholarly API) -> route through domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org, publisher domains) instead of the tables below; see `references/search-sources.md` for query patterns.
-- Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> the Default Routing table below and the Default Source Order in `references/search-sources.md` apply directly; this is the "Scholarly database available" branch that the domain-specific table is a sub-route of.
+- General web search only (no scholarly API) -> route through domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org, publisher domains) instead of the tables below; see `search-sources.md` for query patterns.
+- Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> the Default Routing table below and the Default Source Order in `search-sources.md` apply directly; this is the "Scholarly database available" branch that the domain-specific table is a sub-route of.
 - Browser tool only (no query API) -> skip query-based routing and navigate directly to publisher, DOI, or PubMed pages for the candidate under review.
 
 ## Default Routing
