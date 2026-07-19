@@ -1,126 +1,128 @@
-# Academic Reference Matcher Skill
+# Academic Reference Matcher
 
-通用 AI agent 文献匹配 Skill：识别学术 claim，检索候选文献，验证支撑关系，并输出可复查的引用结果。
-
-> 中文为主，English version below.
+用于学术文献匹配的 Agent Skill：识别需要引用的论断，查找并核验候选文献，输出可复查的引用结果。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-green.svg)](SKILL.md)
 
-## 适用场景
+## 能做什么
 
-- 给论文段落、综述、基金或 rebuttal 补参考文献。
-- 检查已有引用是否真的支撑原文 claim。
-- 替换弱引用、错引用、过时引用或撤稿文献。
+- 为论文、综述、基金和 rebuttal 补充参考文献。
+- 检查现有引用是否真的支撑原文，替换弱引用、错引用或撤稿文献。
 - 输出 APA、GB/T 7714、Vancouver、IEEE、BibTeX、RIS 等格式。
-- 为长文本生成 copy-ready Markdown 报告、claim-reference 表和简要检索记录。
+- 区分“找到候选文献”和“文献确实支撑论断”，并说明证据来源和不确定性。
 
-## 它做什么
+它不自带数据库账号或 PDF 下载器，也不会绕过付费墙、验证码和机构权限。检索质量取决于宿主 Agent 能访问的搜索工具、数据库和用户提供的材料。
 
-- 拆分需要引用的学术论断，并保留稳定编号。
-- 为每个 claim 规划独立检索式，避免宽泛关键词一搜到底。
-- 区分候选发现和证据支撑，不把相似题名当作已验证引用。
-- 标注文献证据等级：metadata、abstract、snippet、full text 或用户提供材料。
-- 说明找不到可靠支撑的 claim、拒绝的候选和访问限制。
+## 安装
 
-## 不做什么
+### 让 Agent 安装
 
-- 不自带搜索 API、数据库账号或 PDF 下载器。
-- 不破解付费墙，不绕过验证码、登录墙或机构权限。
-- 不把只能看到题名、关键词、摘要的收费论文夸大成强支撑。
-- 不承诺穷尽所有文献，除非用户提供限定数据库、检索式或文献库。
-
-## 使用方式
-
-在支持 skills / agent instructions 的 agent 里，最简单的方式是直接发送：
+把下面这段话发给 Codex、Claude Code 或其他支持 Skills 的 Agent：
 
 ```text
-请从 GitHub 安装这个 skill，并在之后需要文献匹配、引用验证、补参考文献时优先使用它：
-https://github.com/keros68/academic-reference-matcher-skill
+请完整安装这个 Skill：
+https://github.com/keros68/academic-reference-matcher
+
+请克隆或下载整个仓库到个人 skills 目录下的 academic-reference-matcher 文件夹，不要只保存 README.md。安装后确认该文件夹中同时存在 SKILL.md 和 references/，然后告诉我实际安装路径。
 ```
 
-注意：GitHub 开源不等于本机已安装。需要先安装一次，之后重启或新开窗口测试：
+如果安装目录里只有 `README.md`，说明 Agent 只读取了 GitHub 首页，并未完成安装。让它替换这个不完整目录并重新克隆整个仓库即可。
 
-```text
-使用 $academic-reference-matcher 为下面这段话找参考文献，并输出 claim-reference 表。
+### 手动安装
+
+Windows PowerShell：
+
+```powershell
+# Codex
+git clone https://github.com/keros68/academic-reference-matcher.git "$env:USERPROFILE\.codex\skills\academic-reference-matcher"
+
+# Claude Code
+git clone https://github.com/keros68/academic-reference-matcher.git "$env:USERPROFILE\.claude\skills\academic-reference-matcher"
 ```
 
-如果 agent 不能自动安装 GitHub skill，可以手动 clone 到它的 skills 目录：
+macOS / Linux：
 
 ```bash
-# Claude Code
-git clone https://github.com/keros68/academic-reference-matcher-skill.git \
-  ~/.claude/skills/academic-reference-matcher
-
 # Codex
-git clone https://github.com/keros68/academic-reference-matcher-skill.git \
+git clone https://github.com/keros68/academic-reference-matcher.git \
   ~/.codex/skills/academic-reference-matcher
 
-# 通用 agent 约定目录
-git clone https://github.com/keros68/academic-reference-matcher-skill.git \
-  ~/.agents/skills/academic-reference-matcher
-
-# 项目局部使用
-git clone https://github.com/keros68/academic-reference-matcher-skill.git \
-  ./.agents/skills/academic-reference-matcher
+# Claude Code
+git clone https://github.com/keros68/academic-reference-matcher.git \
+  ~/.claude/skills/academic-reference-matcher
 ```
 
-没有正式 skill loader 的环境，可以把 `SKILL.md` 作为 agent instruction 使用；需要更严格的检索质量时，再附带 `references/` 里的规则文件。
+安装完成后，重启 Agent 或新开一个会话。完整安装至少应包含：
 
-## 输出内容
+```text
+academic-reference-matcher/
+├── SKILL.md
+├── references/
+└── agents/openai.yaml
+```
 
-常见输出包括：
+## 使用
 
-- `reference-match-report.md` 引用匹配报告；
-- `references.bib` / `references.ris` / 不同引用格式的参考文献文件；
-- claim-reference 对照表；
-- 推荐引用和格式化参考文献；
-- 支撑强度与证据来源说明；
-- 无法验证的 claim 和下一步建议；
-- compact search audit。
+在请求中直接点名 `$academic-reference-matcher`，并提供需要处理的文字或参考文献：
 
-## 文件结构
+```text
+使用 $academic-reference-matcher 为下面这段话补充参考文献，输出 claim-reference 对照表和 GB/T 7714 格式的参考文献。
+```
 
-- `SKILL.md` - skill 主说明和触发规则。
-- `references/` - 检索规划、来源选择、证据分级、输出格式和审计模板。
-- `examples/` - 常见请求示例。
-- `agents/openai.yaml` - 兼容运行时的 UI 元数据。
+也可以要求它核验或替换现有引用：
 
-## 已知局限
+```text
+使用 $academic-reference-matcher 检查这些引用是否支撑对应论断。保留可靠引用，替换不匹配或已撤稿的文献，并说明判断依据。
+```
 
-检索质量取决于宿主 agent 的联网、数据库、浏览器、PDF 和本地文献库能力。高风险投稿、系统综述和最终参考文献格式仍建议人工复核。
+常见输出包括带引用的修改稿、claim-reference 对照表、引用核验说明，以及 Markdown、BibTeX 或 RIS 文件。高风险投稿、系统综述和最终格式仍建议人工复核。
 
-## Attribution and Redistribution
+## 更新
 
-This project is the original Academic Reference Matcher Skill by keros68:
+Windows PowerShell：
 
-https://github.com/keros68/academic-reference-matcher-skill
+```powershell
+git -C "$env:USERPROFILE\.codex\skills\academic-reference-matcher" pull --ff-only
+```
 
-The project is released under the MIT License. Redistribution, forks, modified versions, and repackaged copies must preserve the copyright notice, license text, and `NOTICE.md`. Please do not present modified copies as the original project or imply endorsement by the original author.
+macOS / Linux：
+
+```bash
+git -C ~/.codex/skills/academic-reference-matcher pull --ff-only
+```
+
+Claude Code 用户把命令中的 `.codex` 改为 `.claude`。
+
+如果是由 Agent 安装，也可以直接发送：
+
+```text
+请更新已安装的 $academic-reference-matcher。拉取 GitHub 最新版本，并确认 SKILL.md 和 references/ 均已更新；不要只下载 README.md。
+```
+
+更新后建议重启 Agent 或新开会话。
+
+## 项目文件
+
+- [`SKILL.md`](SKILL.md)：核心工作流程和触发规则。
+- [`references/`](references/)：检索规划、来源选择、证据分级、输出格式和审计规则。
+- [`examples/`](examples/)：常见请求示例。
+- [`agents/openai.yaml`](agents/openai.yaml)：兼容运行时的界面元数据。
 
 ## English
 
-Academic Reference Matcher is a portable agent skill for scholarly reference matching. It helps an agent identify citation-worthy claims, search candidate papers, verify whether a reference supports the claim, and output auditable citations.
+Academic Reference Matcher is an agent skill for finding, verifying, replacing, and formatting scholarly references.
 
-It is not a downloader and does not bypass paywalls. Paywalled metadata can help discovery, but metadata-only visibility must not be treated as strong support.
-
-Quick start:
+Clone or download the **entire repository** into your agent's skills directory. An installation containing only `README.md` is incomplete; verify that both `SKILL.md` and `references/` are present.
 
 ```text
-Install this skill from GitHub and use it for scholarly reference matching, citation verification, and citation formatting:
-https://github.com/keros68/academic-reference-matcher-skill
-```
-
-After installation, restart or open a new agent window and call:
-
-```text
-Use $academic-reference-matcher to find and verify scholarly references for this paragraph.
+Use $academic-reference-matcher to find and verify scholarly references for this paragraph, then create a claim-reference table.
 ```
 
 ## License
 
-MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
+MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Redistributed or modified copies must preserve the copyright and license notices and must not imply endorsement by the original author.
 
 ---
 
-**同系列 Agent Skills**：[sci-select](https://github.com/keros68/sci-select)（选刊+投稿前审查） · [academic-reference-matcher](https://github.com/keros68/academic-reference-matcher)（文献引用） · [abstract-fig](https://github.com/keros68/abstract-fig)（图形摘要） · [cugb-doctoral-thesis-format](https://github.com/keros68/cugb-doctoral-thesis-format)（学位论文格式） · [ai-cross](https://github.com/keros68/ai-cross)（多模型交叉验证）｜全览见 [keros68](https://github.com/keros68)
+同系列 Agent Skills：[sci-select](https://github.com/keros68/sci-select)（选刊与投稿前审查） · [abstract-fig](https://github.com/keros68/abstract-fig)（图形摘要） · [cugb-doctoral-thesis-format](https://github.com/keros68/cugb-doctoral-thesis-format)（学位论文格式） · [ai-cross](https://github.com/keros68/ai-cross)（多模型交叉验证）
