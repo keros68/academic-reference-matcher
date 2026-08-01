@@ -52,7 +52,7 @@ git clone https://github.com/keros68/academic-reference-matcher.git \
 
 ## Attribution and Redistribution
 
-This repository is the original academic-reference-matcher skill by keros68, released under the MIT License. Forks, modified versions, and repackaged copies must preserve the copyright notice, the license text, and `NOTICE.md`, and must not present themselves as the original project or imply endorsement by the original author.
+This repository is the original academic-reference-matcher skill by keros68, released under the MIT License. Redistribution, forks, modified versions, and repackaged copies must preserve the copyright notice, the license text, and `NOTICE.md`, and must not present themselves as the original project or imply endorsement by the original author.
 
 ## English
 
