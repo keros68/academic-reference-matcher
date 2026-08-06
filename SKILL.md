@@ -1,153 +1,92 @@
 ---
 name: academic-reference-matcher
-description: Use when finding, adding, verifying, replacing, or formatting scholarly references for academic claims, paragraphs, manuscripts, literature reviews, rebuttals, grant text, or citation lists; use when checking whether cited papers support a claim, identifying claims that need citations, creating copy-ready citation reports/files, or producing APA, GB/T, Vancouver, IEEE, BibTeX, RIS, or DOI-linked references. Also use for Chinese requests such as 补参考文献、找文献、引用验证、文献匹配、加引用、GB/T 7714 格式引用. Not for general fact-checking without a citation need, or legal/journalistic citation formatting.
+description: "Use only for user-provided academic text, explicit scholarly claims, existing citations, or known bibliographies needing citations added, verified, replaced, extracted, or formatted. Supports claim-to-source matching, citation-support checks, replacements, and common academic citation formats. Do not use for general fact-checking, legal/journalistic citation work, open-ended 'find literature about X', topic-level exhaustive discovery, systematic-review corpus construction, PRISMA searches, or creating new research claims. Chinese: 为已有段落补参考文献、核验已有引用、替换错误引用、提取需引文论断、GB/T 7714 格式化."
 ---
 
 # Academic Reference Matcher
 
-## Overview
+Match evidence to bounded, user-supplied academic claims. This is not an AutoResearch workflow: do not broaden the question, discover a topic-level corpus, or write extra claims.
 
-Find and verify scholarly references for user-provided academic text. Prefer the agent's built-in web, search, database, browser, citation, or library tools; this skill supplies the workflow and quality bar rather than a required external API.
+## Scope gate
 
-## Core Rules
+Proceed only when the user supplies at least one of: academic text, a discrete claim, citations attached to text, or a known reference list. Ask for the missing text, claim, or bibliography when needed.
 
-- Never invent citations, DOIs, author names, journal names, or publication years.
-- Separate "candidate reference found" from "reference supports the claim".
-- Use primary literature, systematic reviews, standards, datasets, or official documentation before blogs and secondary summaries.
-- Preserve the user's requested citation style and language. If none is requested, default to author-year inline citations plus a compact reference list.
-- Prefer copy-ready files for Standard+ tasks when the runtime can write files, especially if the user asks for copying, exporting, or multiple citation styles.
-- If web/database access is unavailable, ask for a bibliography, search export, DOI list, PDF set, Zotero library, or pasted search results.
-- Disclose access limits, weak matches, and unverified claims instead of filling gaps with plausible-looking references.
+Decline or redirect requests for open-ended research questions, comprehensive topic searches, systematic-review screening, PRISMA flow, or claims of complete coverage. Explain that this skill audits or matches citations for a bounded text; it does not build an exhaustive literature corpus.
 
-## Task Modes
+Never invent bibliographic fields or claim support. Preserve the requested language and style; otherwise use author-year citations and a compact reference list. Report weak support, access limits, and unverified claims plainly.
 
-Choose the mode from the user's request:
+## Mode shortcut
 
-- Add: find citations for uncited claims.
-- Verify: check whether existing citations support the claims they are attached to.
-- Replace: find stronger or more accurate references for weak, wrong, outdated, retracted, or inaccessible citations.
-- Format: convert known references to the requested style without doing new relevance matching.
-- Extract: identify citation-worthy claims without searching yet.
+Choose one mode before work. Do not turn a narrow mode into a search task.
 
-## Search Depth
+### Add
 
-Choose the lightest depth that satisfies the user's intent:
+Match new scholarly evidence to specified uncited claims. Do not add claims or expand the topic.
 
-- Quick: 1-3 claims, 3-5 strong references, fast support check.
-- Standard: paragraph or short section, claim table, two or more scholarly sources when possible.
-- Deep: long section, review background, or disputed topic; use segment IDs, source routing, and search audit.
-- Audit: systematic-review preparation, PRISMA-like transparency, or high-stakes manuscript work; require a reproducible search log and explicit limits.
+### Verify
 
-If the user asks for "thorough", "systematic", "综述", "全面", "PRISMA", "meta-analysis", or "Cochrane", use Deep or Audit. For Audit, state the scope and limits before doing the work.
+Resolve and assess citations already attached to claims first. Search only to resolve identity, version/status, or a necessary gap; do not proactively find replacements.
+
+### Replace
+
+Diagnose the supplied citation, then match a more direct, current, or valid source to the same claim. Do not change claim meaning or replace in bulk without confirmation.
+
+### Format
+
+Convert known, sufficiently identified references to the requested style. Do not search for new literature or assess relevance; mark missing fields.
+
+### Extract
+
+List citation-worthy claims from supplied text, then stop. Do not search or recommend sources.
 
 ## Workflow
 
-1. Scope the task.
-   - Identify the field, date sensitivity, citation style, language, task mode, and search depth.
-   - For long documents, process by section and keep citation numbering stable.
+1. Bound input: record mode, claims, field, language, date/source limits, style, and risk. For multi-claim work use `S001` IDs; read [query planning](references/query-planning.md) for multi-claim, Chinese, Add, or Replace work.
+2. Apply the shortcut. In Verify, compare each citation to its attached claim before supplementary lookup. In Add/Replace, use [search sources](references/search-sources.md); read [source routing](references/source-routing.md) only for domain selection.
+3. Check identity and direct support. Read [verification rubric](references/verification-rubric.md) for accepted matches in accuracy-sensitive, multi-candidate, Deep, or Audit work. Read [paywall-aware access](references/paywall-aware-access.md) only for limited access.
+4. Insert or propose citations beside the supported claim, then format using [output formats](references/output-formats.md). Every processed claim must be accepted, rejected, or unverified.
 
-2. Extract citation-worthy claims.
-   - Mark empirical, causal, comparative, quantitative, methodological, historical, or definitional claims.
-   - Assign stable segment IDs (`S001`, `S002`, ...) for multi-claim or long-text tasks.
-   - Do not cite generic transitions, obvious background, or the user's own stated contribution unless requested.
-   - Load `references/query-planning.md` when turning claims into search queries.
+## Depth and confirmation
 
-3. Detect host search capability and pick the route.
-   - No search or browsing tool at all -> ask the user for a bibliography, PDFs, or database export (see Core Rules), then verify against those materials only.
-   - General web search only (no scholarly API) -> use domain-limited queries (site:pubmed.ncbi.nlm.nih.gov, site:arxiv.org, site:doi.org) from references/search-sources.md.
-   - Scholarly database or plugin available (OpenAlex, PubMed, Crossref, arXiv tools) -> follow the Default Source Order in references/search-sources.md and the domain table in references/source-routing.md.
-   - Browser tool only (no query API) -> navigate directly to publisher, DOI, or PubMed pages.
+Use the lightest bounded depth:
 
-4. Search broadly, then narrowly.
-   - Start with exact phrases and key technical terms from the claim.
-   - Search title/abstract/DOI sources before general web search when available.
-   - Load `references/search-sources.md` when choosing sources or building queries.
-   - Load `references/source-routing.md` for domain-specific routing or Deep/Audit work.
-   - Load `references/paywall-aware-access.md` when relevant papers are paywalled or only metadata is visible.
+- Quick — 1–3 claims.
+- Standard — a paragraph or short section.
+- Deep — a defined long section or disputed claims.
+- Audit — a bounded citation-evidence audit.
 
-5. Verify relevance.
-   - Read enough of the title, abstract, metadata, snippets, and available full text to judge support.
-   - Score each candidate using `references/verification-rubric.md` when the task has multiple candidates or high accuracy requirements.
-   - Prefer papers that directly support the claim over papers that merely share keywords.
-   - Require title, year, stable URL or DOI, and a support rationale before treating a match as usable.
-   - Treat title, keywords, and metadata as discovery signals, not strong support, unless the claim is purely bibliographic.
+Depth increases checking and traceability, never topic scope.
 
-6. Format and insert citations.
-   - Use the user's requested style. Load `references/output-formats.md` for output contracts and style notes.
-   - Keep citations adjacent to the claims they support.
-   - Include uncertainty notes for weak matches instead of silently overstating confidence.
-   - Create a copy-ready Markdown report when the user asks for a file, export, citation package, or easy copy/paste output.
-   - For Standard+ tasks, include a compact search audit. Load `references/search-audit.md`.
-   - Before finishing, confirm every claim ID from step 2 appears either in the claim-reference table or in the Could Not Verify section - no claim may be silently dropped.
+For more than 10 citable claims, high-risk claims (clinical, safety, regulatory, or policy), or a requested bulk change, run a representative 3–5-claim sample first. Show the scope, evidence quality, and limitations, then obtain human confirmation before continuing.
 
-## Search Strategy
+Before applying a batch replacement to text, display a replacement table with claim ID, current citation, proposed citation, support rationale, evidence basis, confidence, and caveat. Wait for confirmation; until then label changes as proposals.
 
-Use at least two independent scholarly sources for important claims when possible. Good default order:
+Audit is an evidence audit of the supplied, bounded claims—not a systematic-review or PRISMA completeness exercise. State this boundary when a user asks for PRISMA, comprehensive retrieval, or a systematic-review corpus.
 
-1. User-provided bibliography, PDFs, Zotero/Mendeley export, or project library.
-2. OpenAlex, Crossref, Semantic Scholar, PubMed/Europe PMC, arXiv, IEEE/ACM/ScienceDirect/Springer/Nature pages when accessible.
-3. General web search only to locate publisher pages, DOI records, preprints, or official reports.
+## Evidence and source use
 
-For each selected reference, capture enough provenance to let the user audit it: title, authors, year, venue, DOI or stable URL, and a one-sentence support rationale.
+Prefer user-provided material and stable scholarly or official records. Search broadly enough to find a direct match, then stop when an alternate appropriate route adds no better evidence. Use two independent routes for important claims when practical; do not count duplicate metadata pages as independent evidence.
 
-## Evidence Minimums
+Capture bibliographic identity, stable locator, evidence basis, and a one-sentence claim-specific rationale. Evidence tiers, confidence labels, and rejection rules are defined only in [verification rubric](references/verification-rubric.md). Treat titles, keywords, metadata, and citation counts as discovery—not proof—except for bibliographic facts.
 
-For High or Medium confidence matches, include:
+## Outputs and traceability
 
-- bibliographic identity: title, authors, year, venue;
-- stable locator: DOI, PMID, arXiv ID, accession, standard number, or stable URL;
-- evidence basis: abstract, full text, metadata, snippet, user-provided PDF, or official record;
-- support rationale: one sentence tying the reference to the exact claim.
+For small tasks, return cited text or the requested narrow result plus references. Use the file bundle and table contracts in [output formats](references/output-formats.md) for Standard+ or requested exports.
 
-If any of these are missing, lower confidence or add a note.
+For Standard, Deep, or Audit work, read [search audit](references/search-audit.md) and include its compact source-status table. Record each route as `attempted`, `succeeded`, `partial`, or `skipped` with a reason.
 
-Evidence tiers:
+Distinguish `no direct match found after a completed search` from `search failed` or `access/tool limited`; neither may be presented as the other.
 
-- Discovery-only: title, keywords, index metadata, citation counts, or related-work lists suggest relevance but do not establish support.
-- Abstract-supported: the abstract directly supports the claim; usually Medium unless the claim is broad and low-risk.
-- Snippet-supported: an official publisher or database snippet directly addresses the claim; usually Low-Medium confidence.
-- Fulltext-supported: full text, user-provided PDF, official guideline, dataset record, or publisher page directly supports the claim; eligible for High.
-- Bibliographic-only: metadata is enough only for claims about existence, authorship, year, venue, DOI, or publication status.
+## Reference map
 
-## Output
-
-For small requests, answer in prose with inserted citations and a reference list.
-
-For Standard+ tasks, or whenever the user asks for "文件", "复制", "导出", "copy", "paste", "BibTeX", "RIS", "GB/T", or multiple citation styles, create file outputs when possible:
-
-- `reference-match-report.md`: copy-ready main report with cited revision, claim-reference table, references, caveats, and search audit.
-- `references-apa.md`, `references-gbt7714.md`, `references-vancouver.md`, or `references-ieee.md`: style-specific reference lists when requested.
-- `references.bib` or `references.ris`: machine-readable entries when requested and enough metadata is verified.
-
-In chat, return a short summary plus file paths. Do not duplicate the full report in chat unless files cannot be created.
-
-For multi-claim matching, use this compact table:
-
-| Claim | Mode | Best reference | Support | Evidence basis | Confidence | Notes |
-|---|---|---|---|---|---|---|
-
-Use confidence labels:
-
-- High: directly supports the claim with matching population, method, mechanism, or result.
-- Medium: supports the broader point but differs in scope, method, or context.
-- Low: related background only; do not present as strong support.
-
-End with a "Could not verify" section for claims with no reliable match.
-
-For Deep or Audit tasks, include segment IDs in the table and a search audit summary.
+- [query planning](references/query-planning.md) — segmenting and query families for multi-claim, Chinese, Add, or Replace work.
+- [search sources](references/search-sources.md) — default source order and query patterns for Add or Replace.
+- [source routing](references/source-routing.md) — domain-specific source selection after a search capability exists.
+- [paywall-aware access](references/paywall-aware-access.md) — legal access and evidence limits for inaccessible records.
+- [verification rubric](references/verification-rubric.md) — sole source for evidence tiers, scores, and confidence.
+- [output formats](references/output-formats.md) — sole source for report, table, export, and style contracts.
+- [search audit](references/search-audit.md) — audit scope, source status, rejection, and stopping records.
 
 ## Limits
 
-- This skill has no built-in search engine, paid database access, or citation parser.
-- Search quality depends on the host agent's available tools and the user's provided corpus.
-- Paywalls, missing abstracts, incomplete metadata, rate limits, and inaccessible PDFs can weaken verification.
-- Paywalled records can still be useful for discovery and candidate ranking, but metadata-only visibility limits support confidence.
-- Literature coverage is not exhaustive unless the user provides a bounded corpus or reproducible database search strategy.
-- Final journal-specific formatting and high-stakes manuscript checks may still need human review.
-
-## Additional Guardrails
-
-- Treat citation count only as a popularity signal; judge relevance by content match.
-- Cite a review for a specific experimental result only when the review clearly reports it and the user accepts secondary sources.
-- Use a paper only when its content, not just its abstract's terms, matches the claim.
-- Use stable scholarly records such as DOI, PubMed, arXiv, or publisher pages instead of unofficial Google Scholar scraping or CAPTCHA workarounds.
+The skill has no built-in database, paid access, or parser. Do not bypass paywalls, CAPTCHA, login walls, or authorization. If no search access exists, request user-provided PDFs, bibliography, DOI list, library export, or search results and verify only that material. Final journal-specific formatting and high-stakes manuscript decisions need human review.

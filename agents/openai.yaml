@@ -1,4 +1,4 @@
 interface:
   display_name: "Academic Reference Matcher"
-  short_description: "Find, verify, and export scholarly references"
-  default_prompt: "Use $academic-reference-matcher to find and verify scholarly references for this paragraph, then create a copy-ready citation report."
+  short_description: "Match citations to supplied academic claims"
+  default_prompt: "Use $academic-reference-matcher to verify the citations supporting this supplied academic paragraph."

@@ -1,38 +1,31 @@
 # Search Audit
 
-Use this for Standard+ tasks, and always for Deep or Audit tasks. Keep it compact unless the user asks for a full reproducibility log.
+Use for Standard, Deep, or Audit work. This records a bounded citation-evidence audit, not systematic-review retrieval or PRISMA completeness.
 
 ## Compact Audit
 
 ```text
-Search depth: Quick/Standard/Deep/Audit
-Scope: field, language, date range, source limits
-Segment IDs: S001-S00N
-Sources checked: OpenAlex, Crossref, PubMed, arXiv, publisher pages, user PDFs, etc.
-Query families:
-- S001: ...
-- S002: ...
+Mode and depth: ...
+Bounded scope: supplied text/claims, language, date/source limits
+Segments: S001–S00N
+Source status:
+| Route | Status | Reason / result |
+| ... | attempted/succeeded/partial/skipped | ... |
+Query intent: S001: ...; S002: ...
 Accepted evidence: N high, N medium, N low
 Rejected candidates: title/year/reason
-Access limits: paywall, abstract-only, metadata-only, database unavailable
-Stopping reason: direct support found / no better match after alternate route / user-specified limit
+Stopping reason: ...
 ```
 
-## Rejection Reasons
+## Source Status
 
-Use specific reasons:
+- `succeeded`: the query completed. Record its outcome, including an accepted/usable candidate or `no direct match found after completed search`.
+- `partial`: some results or checking were usable, but access, missing content, rate limits, or another limitation prevented completion; state the precise limitation.
+- `attempted`: a query was tried but failed or its results were unusable; state `search failed` or the specific unusable-result reason.
+- `skipped`: deliberately not queried because it was unsuitable, duplicate, unavailable before use, or outside the bounded scope; state why.
 
-- same topic but not the same claim;
-- wrong population, material, method, model, geography, or time period;
-- review/background only, not direct support;
-- preprint superseded by published version;
-- retracted, expression of concern, or outdated guideline;
-- metadata-only and insufficient for the claim;
-- inaccessible full text and abstract does not establish support.
+Never write “not found” when a search failed or was limited, and never describe a completed no-match route as a tool failure.
 
-## Audit Integrity
+## Rejection And Integrity
 
-- Do not list sources that were not actually checked.
-- Do not imply exhaustive coverage unless the corpus and query strategy were bounded.
-- If the host agent's search tool hides exact query syntax, summarize the query intent and source route.
-- If a tool failed, record the failure briefly instead of pretending it was searched.
+Use specific rejection reasons: wrong claim or scope; background only; superseded preprint; retraction/concern/outdated guidance; metadata-only evidence; or inaccessible content that does not establish support. List only routes actually checked. If tool syntax is hidden, summarize query intent and route. Do not imply exhaustive coverage unless the user supplied a bounded corpus and reproducible strategy; even then, this skill does not conduct PRISMA screening or construct a systematic-review corpus.
