@@ -1,34 +1,34 @@
 # Verification Rubric
 
-Use this rubric when ranking multiple candidate references or when the task is accuracy-sensitive.
+Use this as the sole definition of accepted evidence, score, and confidence. Apply it to every accepted match in accuracy-sensitive, multi-candidate, Deep, or Audit work.
+
+## Evidence Tiers
+
+| Tier | Evidence seen | Permitted use |
+|---|---|---|
+| Discovery-only | Title, keywords, index metadata, citation graph | Candidate only; not claim support |
+| Snippet-supported | Official database or publisher snippet addresses the claim | Low–Medium, with the source noted |
+| Abstract-supported | Abstract directly addresses the claim | Usually Medium; Low if scope is unclear |
+| Fulltext-supported | Full text, user PDF, accepted manuscript, official guideline, or dataset record | Eligible for High |
+| Bibliographic-only | Stable metadata | Bibliographic facts only |
 
 ## Score
 
-5. Direct support: the paper's finding, method, dataset, theory, or guideline directly supports the exact claim.
-4. Strong support: the paper supports the claim with minor differences in population, material, model, setting, or wording.
-3. Background support: the paper supports the general area but not the exact claim.
-2. Weakly related: shared keywords or adjacent topic, but no clear support.
-1. Not supportive: contradicts, is irrelevant, is retracted, or cannot be verified.
+- 5 — Directly supports the exact result, method, dataset fact, theory, or recommendation.
+- 4 — Strong support with a minor scope difference.
+- 3 — Background support, not the exact claim.
+- 2 — Adjacent topic or shared keywords only.
+- 1 — Contradictory, irrelevant, retracted, or unverifiable.
 
 ## Checks
 
-- Match the claim type: empirical result, causal mechanism, definition, method, dataset, review-level summary, or guideline.
-- Match the scope: species, population, geography, time period, material, model, software version, experimental condition.
-- Prefer the most direct source: original paper for original findings, guideline for official recommendations, dataset paper for dataset facts.
-- Check metadata consistency: authors, year, title, venue, DOI, preprint versus peer-reviewed version.
-- Flag retractions, expressions of concern, superseded standards, and outdated clinical guidance.
+Match claim type and scope: population, species, geography, time, material, model, software version, condition, and direction of effect. Prefer original research for original findings, issuing bodies for standards/guidance, and dataset papers for dataset facts. Reconcile authors, title, year, venue, DOI, and preprint-versus-published version; flag retractions, expressions of concern, superseded standards, and outdated clinical guidance.
 
-## Evidence Note
+## Decision
 
-For each accepted reference, write one sentence explaining why it supports the claim. If the evidence is only partial, say exactly what is missing.
+- High: score 5, stable record, and direct full-text-level evidence.
+- Medium: score 4 or a directly supportive abstract with only minor uncertainty.
+- Low: score 2–3 or limited visible evidence; background only.
+- Reject: score 1 or no support.
 
-## Confidence Labels
-
-- High: score 5, stable bibliographic record available, and support is direct.
-- Medium: score 4, stable record available, but scope or wording differs slightly.
-- Low: score 2-3, useful for background only; do not present as strong support.
-- Reject: score 1, contradicted, irrelevant, retracted, or unverifiable.
-
-If only metadata or snippets were checked, do not use High unless the claim is purely bibliographic or definitional and the metadata is sufficient.
-
-Title, keywords, citation counts, and index metadata can justify keeping a paper as a candidate. They do not justify claiming support for empirical, causal, comparative, clinical, or methodological claims.
+Write a one-sentence rationale tying each accepted reference to the exact claim. A title, keyword, citation count, or metadata record never earns High for empirical, causal, comparative, clinical, or methodological claims.

@@ -1,53 +1,22 @@
 # Paywall-Aware Access
 
-Use this when a relevant paper is paywalled or only partial information is visible. The goal is better evidence handling, not paywall circumvention.
+Use this only when an otherwise relevant record is inaccessible or partly visible. Seek better lawful access; never bypass a paywall, CAPTCHA, login, or authorization.
 
-## Allowed Uses Of Paywalled Metadata
+## What Visible Metadata Can Do
 
-Metadata can be used for:
+Use title, authors, year, venue, DOI, publication status, keywords, and citation context to identify a candidate or verify bibliographic facts. Do not use metadata alone to establish empirical results, causal mechanisms, comparative effects, recommendations, detailed methods, or statistics. Apply evidence tiers and confidence only through `verification-rubric.md`.
 
-- discovering candidate papers;
-- checking bibliographic facts such as title, authors, year, venue, DOI, publication status, and version;
-- deciding whether to search for an open version, preprint, author manuscript, repository copy, or user-provided PDF;
-- explaining why a paper is promising but not yet verified.
+## Lawful Next Routes
 
-Metadata alone is usually not enough to support:
-
-- empirical results;
-- causal mechanisms;
-- comparative claims;
-- clinical, legal, or policy recommendations;
-- detailed method or dataset claims;
-- claims about effect size, direction, or statistical significance.
-
-## Evidence Tiers
-
-| Tier | Visible evidence | Allowed confidence |
-|---|---|---|
-| Discovery-only | title, keywords, indexing metadata, citation graph | Low or candidate only |
-| Abstract-supported | abstract directly addresses the claim | Low to Medium |
-| Snippet-supported | official publisher or database snippet directly addresses the claim | Low to Medium, note source |
-| Fulltext-supported | full text, user PDF, accepted manuscript, official guideline, dataset record | Medium to High |
-| Bibliographic-only | metadata for authors/year/venue/DOI/publication status | High only for bibliographic claims |
-
-## Legal Access Routes
-
-Prefer these routes before giving up:
-
-- OpenAlex OA URL, Unpaywall, DOAJ, CORE, Europe PMC, PubMed Central, arXiv, bioRxiv, medRxiv, SSRN, institutional repositories, author pages.
-- Publisher abstract, Crossref metadata, PubMed record, Semantic Scholar record, dataset repository, standards body page.
-- User-provided PDFs, Zotero/Mendeley exports, BibTeX/RIS files, local paper libraries, or institutionally accessed pages supplied by the user.
-
-Do not instruct the agent to bypass paywalls, defeat CAPTCHA, scrape behind login walls, reuse unauthorized cookies, or fetch from unauthorized sources.
+Try, where available: an OA URL, publisher abstract, PubMed/Europe PMC or PMC record, preprint, accepted manuscript, institutional repository, author page, dataset/standards record, or a user-provided PDF/library export. Use the status defined in `search-audit.md` and keep its reason specific: `abstract only`, `metadata only`, `full text inaccessible`, or the tool/access failure.
 
 ## Reporting Pattern
 
 ```text
 Candidate but not verified:
 - Paper: ...
-  Visible evidence: title/keywords/abstract/snippet/metadata
+  Visible evidence: ...
   Why it may be relevant: ...
-  Limit: full text unavailable / abstract unavailable / only metadata visible
-  Confidence: Low or candidate-only
-  Next legal route: OA version / preprint / user PDF / library access / author manuscript
+  Limit: ...
+  Next lawful route: ...
 ```

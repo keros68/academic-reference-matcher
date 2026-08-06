@@ -1,6 +1,6 @@
 # Query Planning
 
-Use this when a request has multiple claims, Chinese text, long input, or a need for higher search quality.
+Use this for bounded Add or Replace work with multiple claims, Chinese text, long input, or a need for higher search quality. It does not authorize topic expansion.
 
 ## Segment IDs
 
@@ -50,11 +50,13 @@ After finding candidates, compare each result against the original segment:
 
 If the query starts returning a neighboring topic, rewrite from the original segment instead of continuing down that path.
 
-## Stop Rule
+## Bounded Stop Rule
 
 Stop a claim search when at least one direct supporting source is found and a different source route fails to produce a better match. Continue when:
 
 - the best match is only metadata-only or abstract-only;
 - the claim is central to the argument;
 - the evidence is contested, clinical, legal, regulatory, or high-stakes;
-- the user asked for broad coverage, recent work, or a review-like scan.
+- the user requested a defined date range or bounded source set.
+
+Keep query families tied to the supplied segment. If a result exposes a neighboring research question, record it only as out of scope; do not pursue it.

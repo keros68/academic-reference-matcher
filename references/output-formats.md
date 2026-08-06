@@ -4,7 +4,7 @@ Follow the user's requested style. If no style is requested, use author-year inl
 
 ## Copy-Ready File Bundle
 
-When the runtime can write files, create file outputs for Standard, Deep, or Audit tasks if the user asks for copy/paste, export, a citation package, or explicit citation formats.
+When the runtime can write files, create file outputs for Standard, Deep, or Audit tasks if the user asks for copy/paste, export, a citation package, or explicit citation formats. Format mode converts supplied references only and does not add search results.
 
 Default file:
 
@@ -112,16 +112,17 @@ Could not verify:
 For larger tasks, end with:
 
 ```text
-Search depth: Quick/Standard/Deep/Audit
-Checked sources: ...
-Queries used: ...
+Mode and depth: ...
+Bounded scope: ...
+Source status: see the compact table from `search-audit.md`
+Query intent: ...
 Accepted references: N
 Weak or partial matches: N
 Unverified claims: N
 Access limits: ...
 ```
 
-For Deep or Audit tasks, include segment IDs:
+For Deep or Audit tasks, include segment IDs. The sole source for search-audit structure and statuses is `search-audit.md`:
 
 | Segment | Claim | Query families | Accepted reference | Evidence basis | Confidence | Notes |
 |---|---|---|---|---|---|---|
